@@ -1,1 +1,13 @@
-
+*
+{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    position: relative;
+    font-family: 'Prompt', sans-serif;
+}
+#root{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
