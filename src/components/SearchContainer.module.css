@@ -1,5 +1,35 @@
-.search{
+.box{
     width:90%;
     height: 90vh;
-    background-color: rgb(49, 164, 164);
+    background-image: url("/src/images/sky.jpg");
+    border-radius: 14px;
+    display: flex;
+}
+.search {
+    width: 20%;
+    height: 100%;
+    background-color: rgb(28, 40, 38);
+    opacity: 0.4;
+    border-radius: 14px;
+    border-right: 1px solid white;
+    
+}
+.search input{
+    margin-top: 80px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid rgb(255, 255, 255);
+    color:rgb(255, 255, 255);
+    width:150px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.search button{
+    height: 30px;
+    padding: 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    
 }
