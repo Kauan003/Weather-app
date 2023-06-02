@@ -1,9 +1,15 @@
 .box{
     width:90%;
     height: 90vh;
-    background-image: url("/src/images/sky.jpg");
+    /* background-image: url("/src/images/sky.jpg"); */
+    background-color:gray;
     border-radius: 14px;
     display: flex;
+}
+.withBackground {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .search {
     width: 20%;
