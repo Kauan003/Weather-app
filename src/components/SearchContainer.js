@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './SearchContainer.module.css';
-// import { RiSunLine, RiCloudyLine, RiRainyLine, RiSnowyLine, RiThunderstormsLine, RiMoonClearLine   } from 'react-icons/ri';
+import { BsSearch } from 'react-icons/bs';
+
 
 function SearchContainer() {
   const [inputValue, setInputValue] = useState('')
@@ -19,7 +20,9 @@ function SearchContainer() {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        const { main, name, sys, weather } = data
+        const { main, name, sys, weather, } = data
+        console.log(main, name, sys, weather)
+        console.log(main.feels_like)
         const temperature = Math.round(main.temp)
         setWeatherData({ main, name, sys, weather, temperature}) // Atualiza o estado com os dados recebidos
       })
@@ -28,31 +31,31 @@ function SearchContainer() {
       })
   }
 
-  const weatherBackgrounds = {
-    thunderstorms: 'url(src/images/thunderstorms-image.webp)',
-    rainy: 'url(src/images/rainy-image.webp)',
-    snowy: 'url(src/images/snowy-image.webp)',
-    cloudy: 'url(src/images/cloudy-image.webp)',
-    sunny: 'url(src/images/sunny-image.webp)',
-  }
+//   const weatherBackgrounds = {
+//     thunderstorms: 'url(src/images/thunderstorms-image.webp)',
+//     rainy: 'url(src/images/rainy-image.webp)',
+//     snowy: 'url(src/images/snowy-image.webp)',
+//     cloudy: 'url(src/images/cloudy-image.webp)',
+//     sunny: 'url(src/images/sunny-image.webp)',
+//   }
 
-  let backgroundImage = null;
+//   let backgroundImage = null;
 
-if (weatherData && weatherData.weather[0]) {
-  const weatherCode = weatherData.weather[0].id;
+// if (weatherData && weatherData.weather[0]) {
+//   const weatherCode = weatherData.weather[0].id;
 
-  if (weatherCode >= 200 && weatherCode <= 232) {
-    backgroundImage = weatherBackgrounds.thunderstorms;
-  } else if (weatherCode >= 300 && weatherCode <= 531) {
-    backgroundImage = weatherBackgrounds.rainy;
-  } else if (weatherCode >= 600 && weatherCode <= 622) {
-    backgroundImage = weatherBackgrounds.snowy;
-  } else if (weatherCode >= 701 && weatherCode <= 781) {
-    backgroundImage = weatherBackgrounds.cloudy;
-  } else if (weatherCode === 800) {
-    backgroundImage = weatherBackgrounds.sunny;
-  }
-}
+//   if (weatherCode >= 200 && weatherCode <= 232) {
+//     backgroundImage = weatherBackgrounds.thunderstorms;
+//   } else if (weatherCode >= 300 && weatherCode <= 531) {
+//     backgroundImage = weatherBackgrounds.rainy;
+//   } else if (weatherCode >= 600 && weatherCode <= 622) {
+//     backgroundImage = weatherBackgrounds.snowy;
+//   } else if (weatherCode >= 701 && weatherCode <= 781) {
+//     backgroundImage = weatherBackgrounds.cloudy;
+//   } else if (weatherCode === 800) {
+//     backgroundImage = weatherBackgrounds.sunny;
+//   }
+// }
   let weatherIconUrl = null;
 
 if (weatherData && weatherData.weather[0]) {
@@ -61,20 +64,31 @@ if (weatherData && weatherData.weather[0]) {
 }
 
   return (
-    <div className={`${styles.box} ${backgroundImage && styles.withBackground}`} style={{ backgroundImage }}>
+    <div className={styles.box}>
+      {/* <img src={backgroundImage}  alt="" className={styles.img}></img> */}
       <div className={styles.search}>
         <form onSubmit={handleFormSubmit}>
           <input type="text" value={inputValue} onChange={handleInputChange} placeholder="City" />
-          <button type="submit"></button>
+          <button type="submit">
+            <BsSearch />
+            </button>
         </form>
+        {weatherData && (
+            <div className={styles.info}>
+              {/* Renderize a imagem do ícone */}
+              <p>{weatherData.name}</p>
+              <p>{weatherData.temperature}°C</p>
+              
+            </div>
+          )}
       </div>
       {weatherData && (
       <div>
         {/* Renderize a imagem do ícone */}
         {weatherIconUrl && <img src={weatherIconUrl} alt="Weather Icon" />}
-        <p>City: {weatherData.name}</p>
-        <p>Temperature: {weatherData.main.temp}°C</p>
-        <p>Description: {weatherData.weather[0].description}</p>
+        <p>{weatherData.name}</p>
+        <p>{weatherData.temperature}°C</p>
+        <p>{weatherData.weather[0].description}</p>
       </div>
     )}
     </div>
