@@ -1,4 +1,5 @@
 import './App.css';
+
 import SearchContainer from './components/SearchContainer';
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
       <header className="App-header">
        
       <SearchContainer/>
+    
       </header>
     </div>
   );

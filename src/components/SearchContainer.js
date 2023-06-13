@@ -7,6 +7,19 @@ function SearchContainer() {
   const [inputValue, setInputValue] = useState('')
   const [weatherData, setWeatherData] = useState(null) // Novo estado para armazenar os dados
 
+  const dataAtual = new Date()
+  const horaAtual = dataAtual.getHours()
+  const minutoAtual = dataAtual.getMinutes()
+
+  var months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ]
+ 
+  const dia = dataAtual.getDate()
+  const mes = months[dataAtual.getMonth()]
+  const ano = dataAtual.getFullYear()
+
   const handleInputChange = (event) => {
     setInputValue(event.target.value)
   };
@@ -31,31 +44,6 @@ function SearchContainer() {
       })
   }
 
-//   const weatherBackgrounds = {
-//     thunderstorms: 'url(src/images/thunderstorms-image.webp)',
-//     rainy: 'url(src/images/rainy-image.webp)',
-//     snowy: 'url(src/images/snowy-image.webp)',
-//     cloudy: 'url(src/images/cloudy-image.webp)',
-//     sunny: 'url(src/images/sunny-image.webp)',
-//   }
-
-//   let backgroundImage = null;
-
-// if (weatherData && weatherData.weather[0]) {
-//   const weatherCode = weatherData.weather[0].id;
-
-//   if (weatherCode >= 200 && weatherCode <= 232) {
-//     backgroundImage = weatherBackgrounds.thunderstorms;
-//   } else if (weatherCode >= 300 && weatherCode <= 531) {
-//     backgroundImage = weatherBackgrounds.rainy;
-//   } else if (weatherCode >= 600 && weatherCode <= 622) {
-//     backgroundImage = weatherBackgrounds.snowy;
-//   } else if (weatherCode >= 701 && weatherCode <= 781) {
-//     backgroundImage = weatherBackgrounds.cloudy;
-//   } else if (weatherCode === 800) {
-//     backgroundImage = weatherBackgrounds.sunny;
-//   }
-// }
   let weatherIconUrl = null;
 
 if (weatherData && weatherData.weather[0]) {
@@ -63,9 +51,11 @@ if (weatherData && weatherData.weather[0]) {
   weatherIconUrl = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${iconCode}.svg`;
 }
 
+
   return (
-    <div className={styles.box}>
-      {/* <img src={backgroundImage}  alt="" className={styles.img}></img> */}
+    //define a classe do elemento de acordo com a descrição do clima fornecido pela api, formata a string removendo os espaços para ser reconhecido no arquivo css
+    <div className={`${styles.box} ${weatherData && weatherData.weather[0] ? styles[weatherData.weather[0].description.replace(/ /g, '')] : ''}`}>
+      
       <div className={styles.search}>
         <form onSubmit={handleFormSubmit}>
           <input type="text" value={inputValue} onChange={handleInputChange} placeholder="City" />
@@ -76,21 +66,18 @@ if (weatherData && weatherData.weather[0]) {
         {weatherData && (
             <div className={styles.info}>
               {/* Renderize a imagem do ícone */}
+              {weatherIconUrl && <img src={weatherIconUrl} alt="Weather Icon" />} 
               <p>{weatherData.name}</p>
               <p>{weatherData.temperature}°C</p>
-              
             </div>
           )}
       </div>
-      {weatherData && (
-      <div>
-        {/* Renderize a imagem do ícone */}
-        {weatherIconUrl && <img src={weatherIconUrl} alt="Weather Icon" />}
-        <p>{weatherData.name}</p>
-        <p>{weatherData.temperature}°C</p>
-        <p>{weatherData.weather[0].description}</p>
-      </div>
-    )}
+        <div>{dia + " "+ mes + " " + ano + " | " + horaAtual + ":" + minutoAtual }</div>
+        <div>
+          {weatherData && (
+          <p>{weatherData.weather[0].description}</p>
+              )}
+        </div>
     </div>
   );
 }
