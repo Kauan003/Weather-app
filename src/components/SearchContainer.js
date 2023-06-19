@@ -4,12 +4,15 @@ import { BsSearch } from 'react-icons/bs';
 
 
 function SearchContainer() {
-  const [inputValue, setInputValue] = useState('')
-  const [weatherData, setWeatherData] = useState(null) // Novo estado para armazenar os dados
+  const [inputValue, setInputValue] = useState('');
+  const [weatherData, setWeatherData] = useState(null); // Novo estado para armazenar os dados
+  const [isDataNotFound, setIsDataNotFound] = useState(false); // Estado para controlar se os dados não foram encontrados
+
 
   const dataAtual = new Date()
   const horaAtual = dataAtual.getHours()
   const minutoAtual = dataAtual.getMinutes()
+  const minutoFormatado = minutoAtual < 10 ? '0' + minutoAtual : minutoAtual;
 
   var months = [
     "January", "February", "March", "April", "May", "June",
@@ -40,7 +43,7 @@ function SearchContainer() {
         setWeatherData({ main, name, sys, weather, temperature}) // Atualiza o estado com os dados recebidos
       })
       .catch(() => {
-        console.log('Ocorreu um erro')
+        setIsDataNotFound(true)
       })
   }
 
@@ -55,7 +58,6 @@ if (weatherData && weatherData.weather[0]) {
   return (
     //define a classe do elemento de acordo com a descrição do clima fornecido pela api, formata a string removendo os espaços para ser reconhecido no arquivo css
     <div className={`${styles.box} ${weatherData && weatherData.weather[0] ? styles[weatherData.weather[0].description.replace(/ /g, '')] : ''}`}>
-      
       <div className={styles.search}>
         <form onSubmit={handleFormSubmit}>
           <input type="text" value={inputValue} onChange={handleInputChange} placeholder="City" />
@@ -72,11 +74,18 @@ if (weatherData && weatherData.weather[0]) {
             </div>
           )}
       </div>
-        <div>{dia + " "+ mes + " " + ano + " | " + horaAtual + ":" + minutoAtual }</div>
-        <div>
-          {weatherData && (
-          <p>{weatherData.weather[0].description}</p>
-              )}
+        <div className={styles.container}>
+          <div className={styles.time}>{dia + " "+ mes + " " + ano + " | " + horaAtual + ":" + minutoFormatado }</div>
+          <div className={styles.description}>
+          {weatherData ? (
+            <p>{weatherData.weather[0].description}</p>
+          ) : (
+            isDataNotFound ? (
+              <p>Please search for a valid city 😩
+              </p>
+            ) : null
+          )}
+          </div>
         </div>
     </div>
   );
